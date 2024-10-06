@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-app
+  template:
+    metadata:
+      labels:
+        app: go-app
+    spec:
+      containers:
+        - name: go-app
+          image: nadavlit/k8s-go-app:latest
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: go-app-storage
+              mountPath: /data
+      volumes:
+        - name: go-app-storage
+          persistentVolumeClaim:
+            claimName: go-app-pvc
